@@ -1,0 +1,15 @@
+name: eslint
+
+on:
+  pull_request:
+
+jobs:
+  run_eslint:
+    name: eslint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install packages
+        run: yarn install
+      - name: eslint
+        run: yarn run eslint
