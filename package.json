@@ -1,0 +1,48 @@
+{
+  "name": "chikurima",
+  "version": "0.1.0",
+  "description": "Discord Bot to report nuisances on Discord servers",
+  "main": "src/index.js",
+  "repository": "https://github.com/m2en/chikurima",
+  "author": "m2en <me@m2en.dev>",
+  "type": "module",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node ./build/index.js",
+    "dev": "ts-node --esm ./src/index.ts",
+    "build": "esbuild ./src/index.ts --bundle --platform=node --target=node16 --format=esm --external:./node_modules/* --outfile=build/index.js",
+    "format": "prettier --write \"src/**/*.{js,ts,md}\"",
+    "check": "prettier --check \"src/**/*.{js,ts,md}\" && tsc -p . --noEmit",
+    "eslint": "eslint \"src/**/*.{js,ts,md}\"",
+    "eslint:fix": "eslint \"src/**/*.{js,ts,md}\" --fix",
+    "fix": "yarn run format && yarn run eslint:fix",
+    "prepare": "husky install",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,ts,md}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "discord.js": "^14.4.0",
+    "dotenv": "^16.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.18",
+    "@typescript-eslint/eslint-plugin": "^5.38.0",
+    "@typescript-eslint/parser": "^5.38.0",
+    "esbuild": "^0.15.8",
+    "eslint": "^8.23.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-markdown": "^3.0.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.3",
+    "vitest": "^0.23.4"
+  }
+}
