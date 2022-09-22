@@ -1,6 +1,7 @@
 import { Client, GatewayIntentBits } from 'discord.js';
 import { ReportInfo } from './db/ReportDB.js';
 import { Sequelize } from 'sequelize';
+import { deployCommand } from './command/deploy.js';
 import dotenv from 'dotenv';
 import { extractEnv } from './util/envManager.js';
 
@@ -35,6 +36,9 @@ const sequelize = new Sequelize(name, username, password, {
 });
 
 client.on('ready', async () => {
+  if (client.user == null) {
+    throw new Error('Failed to identify client user');
+  }
   console.log('準備完了');
 
   // mariadbとの接続
@@ -45,6 +49,16 @@ client.on('ready', async () => {
     console.log('Successfully connected to database');
   } catch (e) {
     console.error(`Failed to connect to database`);
+    console.error(e);
+  }
+
+  // コマンドの登録
+  try {
+    console.log('Registering commands ....');
+    await deployCommand(client.user.id);
+    console.log('Command successfully registered');
+  } catch (e) {
+    console.error(`Failed to register command`);
     console.error(e);
   }
 });
