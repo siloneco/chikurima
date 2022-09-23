@@ -6,7 +6,7 @@ chikurimaのコマンドはDiscordの機能 **Slash Commands** を使用して�
 
 Discord内で、 `/report` を入力するとコマンドの一覧が表示されます。
 
-![コマンド](/image/command.png)
+![コマンド](./image/command.png)
 
 chikurimaでできる通報方法は大きく分けて2つあります。
 
@@ -14,7 +14,7 @@ chikurimaでできる通報方法は大きく分けて2つあります。
 
 ユーザーの迷惑行為を通報するには `/report user` コマンドを使います。
 
-![ユーザー通報](/image/reportUser.png)
+![ユーザー通報](./image/reportUser.png)
 
 - `target` には通報したい対象者を指定します。
   - ユーザーIDで指定することもできます。
@@ -28,7 +28,7 @@ chikurimaでできる通報方法は大きく分けて2つあります。
 
 メッセージを通報するには `/report message` コマンドを使います。
 
-![img.png](/image/reportMessage.png)
+![メッセージ通報](./image/reportMessage.png)
 
 - `message-link` には通報したいメッセージのリンクを指定します。
 - `reason` には通報したい理由を指定します。
