@@ -1,6 +1,7 @@
-import { Client, GatewayIntentBits } from 'discord.js';
-import { ReportInfo } from './db/ReportDB.js';
+import { Client, GatewayIntentBits, WebhookClient } from 'discord.js';
+import { ReportInfo } from './db/reportDB.js';
 import { Sequelize } from 'sequelize';
+import { UserReportCommand } from './command/userReportCommand.js';
 import { deployCommand } from './command/deploy.js';
 import dotenv from 'dotenv';
 import { extractEnv } from './util/envManager.js';
@@ -19,27 +20,31 @@ const {
   MARIADB_HOST: host,
   MARIADB_NAME: name,
   MARIADB_USERNAME: username,
-  MARIADB_PASSWORD: password
+  MARIADB_PASSWORD: password,
+  REPORT_WEBHOOK: webhookUrl
 } = extractEnv([
   'DISCORD_BOT_TOKEN',
   'MARIADB_HOST',
   'MARIADB_NAME',
   'MARIADB_USERNAME',
-  'MARIADB_PASSWORD'
+  'MARIADB_PASSWORD',
+  'REPORT_WEBHOOK'
 ]);
 
 // mariadbのインスタンス作成｀
 const sequelize = new Sequelize(name, username, password, {
   host: host,
   dialect: 'mariadb',
-  logging: (...msg) => console.log(msg)
+  logging: false
 });
+
+// webhookのインスタンス作成
+const webhookClient = new WebhookClient({ url: webhookUrl });
 
 client.on('ready', async () => {
   if (client.user == null) {
     throw new Error('Failed to identify client user');
   }
-  console.log('準備完了');
 
   // mariadbとの接続
   try {
@@ -48,8 +53,8 @@ client.on('ready', async () => {
     ReportInfo(sequelize);
     console.log('Successfully connected to database');
   } catch (e) {
-    console.error(`Failed to connect to database`);
-    console.error(e);
+    console.log(e);
+    throw new Error('Failed to connect to database');
   }
 
   // コマンドの登録
@@ -60,6 +65,30 @@ client.on('ready', async () => {
   } catch (e) {
     console.error(`Failed to register command`);
     console.error(e);
+  }
+
+  console.log(`${client.user.tag}(${client.user.id}) Ready!`);
+});
+
+client.on('interactionCreate', async (interaction) => {
+  if (!interaction.isCommand()) {
+    return;
+  }
+
+  const guild = interaction.guild;
+  if (!guild) return;
+  if (!interaction.guild.available) {
+    await interaction.reply({
+      content: 'このギルドは利用できない状態です',
+      ephemeral: true
+    });
+    return;
+  }
+
+  switch (interaction.commandName) {
+    case 'report': {
+      await UserReportCommand(sequelize, interaction, webhookClient);
+    }
   }
 });
 

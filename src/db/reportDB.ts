@@ -5,25 +5,14 @@ export function ReportInfo(sequelize: Sequelize) {
 
   return ReportDB.init(
     {
-      id: {
-        // レポートID
-        type: DataTypes.STRING,
-        allowNull: false,
-        primaryKey: true
-      },
-      date: {
-        // レポート受信日時
-        type: DataTypes.DATE,
-        allowNull: false
-      },
       targetId: {
         // レポート対象者のID
-        type: DataTypes.NUMBER,
+        type: DataTypes.STRING,
         allowNull: false
       },
       reporterId: {
         // レポート送信者のID
-        type: DataTypes.NUMBER,
+        type: DataTypes.STRING,
         allowNull: false
       },
       reason: {
@@ -37,6 +26,6 @@ export function ReportInfo(sequelize: Sequelize) {
         allowNull: true
       }
     },
-    { sequelize, modelName: 'report-logs' }
+    { sequelize, modelName: 'report_logs' }
   );
 }
