@@ -1,10 +1,4 @@
-import {
-  ApplicationCommandType,
-  ContextMenuCommandBuilder,
-  REST,
-  Routes,
-  SlashCommandBuilder
-} from 'discord.js';
+import { REST, Routes, SlashCommandBuilder } from 'discord.js';
 import dotenv from 'dotenv';
 
 export async function deployCommand(clientId: string) {
@@ -53,10 +47,7 @@ export async function deployCommand(clientId: string) {
               .setDescription('通報する理由を指定してください。')
               .setRequired(true)
           )
-      ),
-    new ContextMenuCommandBuilder()
-      .setName('メッセージを通報する')
-      .setType(ApplicationCommandType.Message)
+      )
   ].map((command) => command.toJSON());
 
   dotenv.config();
