@@ -26,9 +26,6 @@ export async function MessageReportCommand(
         'メッセージリンクが不正です。そのギルド内のメッセージリンクのみ通報できます。',
       ephemeral: true
     });
-    await webhookClient.send({
-      content: `<@${interaction.user.id}>の通報は情報が正しくないため、棄却されました。`
-    });
     return;
   }
 
@@ -44,15 +41,16 @@ export async function MessageReportCommand(
   });
 }
 
-function checkMessage(messagelink: string, guildId: string): boolean {
+function checkMessage(targetMessagelink: string, guildId: string): boolean {
   const modelMessagelink =
     /https:\/\/(?:ptb\.|canary\.)?discord(?:app)?\.com\/channels\/(\d+)\/(\d+)\/(\d+)/;
 
-  if (!messagelink.match(modelMessagelink)) {
+  const target = targetMessagelink.match(modelMessagelink);
+  if (!target) {
     return false;
   }
 
-  const [, targetGuildId, ,] = messagelink;
+  const [, targetGuildId, ,] = target;
   if (targetGuildId !== guildId) return false;
 
   return true;

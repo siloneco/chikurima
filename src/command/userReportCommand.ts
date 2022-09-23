@@ -24,9 +24,6 @@ export async function UserReportCommand(
         '通報に失敗しました。Botまたはシステムユーザーは通報できません。',
       ephemeral: true
     });
-    await webhookClient.send({
-      content: `<@${interaction.user.id}>の通報は情報をDiscord APIから取得することができなかったため、棄却されました。`
-    });
     return;
   }
   if (!target) {
