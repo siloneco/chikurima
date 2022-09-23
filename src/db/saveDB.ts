@@ -5,9 +5,9 @@ import { sendDBConsole } from '../util/logger.js';
 // eslint-disable-next-line max-params
 export async function saveDatabase(
   sequelize: Sequelize,
-  targetId: string,
   reporterId: string,
   reason: string,
+  targetId?: string,
   proof?: string
 ) {
   try {

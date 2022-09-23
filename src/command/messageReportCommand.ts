@@ -33,7 +33,7 @@ export async function MessageReportCommand(
   if (!reporterId) return;
   const reason = interaction.options.getString('reason');
   if (!reason) return;
-  await saveDatabase(sequelize, target, reporterId, reason);
+  await saveDatabase(sequelize, reporterId, reason, undefined, target);
   await sendReport(webhookClient, target, reporterId, reason);
   await interaction.reply({
     content: '通報は正しく送信されました。ご協力感謝いたします。',

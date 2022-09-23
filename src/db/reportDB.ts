@@ -8,7 +8,7 @@ export function ReportInfo(sequelize: Sequelize) {
       targetId: {
         // レポート対象者のID
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       reporterId: {
         // レポート送信者のID
@@ -23,7 +23,7 @@ export function ReportInfo(sequelize: Sequelize) {
       proof: {
         // レポートの証拠(メッセージリンク・添付ファイルのリンク)
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
       }
     },
     { sequelize, modelName: 'report_logs' }
