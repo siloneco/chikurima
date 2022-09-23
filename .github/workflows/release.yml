@@ -3,7 +3,7 @@ name: release
 on:
   workflow_dispatch:
     inputs:
-      versionTag:
+      version:
         description: 'Version Tag'
         default: 'vX.Y.Z'
         required: true
