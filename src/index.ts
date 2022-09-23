@@ -1,4 +1,5 @@
 import { Client, GatewayIntentBits, WebhookClient } from 'discord.js';
+import { MessageReportCommand } from './command/messageReportCommand.js';
 import { ReportInfo } from './db/reportDB.js';
 import { Sequelize } from 'sequelize';
 import { UserReportCommand } from './command/userReportCommand.js';
@@ -88,6 +89,12 @@ client.on('interactionCreate', async (interaction) => {
   switch (interaction.commandName) {
     case 'report': {
       await UserReportCommand(sequelize, interaction, webhookClient);
+      await MessageReportCommand(
+        sequelize,
+        interaction,
+        webhookClient,
+        guild.id
+      );
     }
   }
 });
