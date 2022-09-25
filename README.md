@@ -1,5 +1,11 @@
 # chikurima (チクリ魔)
 
+[![release](https://github.com/m2en/chikurima/actions/workflows/release.yml/badge.svg)](https://github.com/m2en/chikurima/actions/workflows/release.yml)
+[![eslint](https://github.com/m2en/chikurima/actions/workflows/eslint.yml/badge.svg)](https://github.com/m2en/chikurima/actions/workflows/eslint.yml)
+[![prettier](https://github.com/m2en/chikurima/actions/workflows/prettier.yml/badge.svg)](https://github.com/m2en/chikurima/actions/workflows/prettier.yml)
+
+---
+
 Discord サーバー上にメンバーが利用できる通報コマンドを構築する Discord Bot
 
 ## Features
