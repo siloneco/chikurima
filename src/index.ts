@@ -11,7 +11,6 @@ import { UserReportCommand } from './command/userReportCommand.js';
 import { deployCommand } from './command/deploy.js';
 import dotenv from 'dotenv';
 import { extractEnv } from './util/envManager.js';
-import { sendReport } from './util/sendReport.js';
 
 const client = new Client({
   intents: [
@@ -55,7 +54,7 @@ const sequelize = new Sequelize(name, username, password, {
 const webhookClient = new WebhookClient({ url: webhookUrl });
 
 client.on('ready', async () => {
-  const startTime = performance.now();
+  console.time('startup:');
 
   if (client.user == null) {
     throw new Error(
@@ -86,24 +85,16 @@ client.on('ready', async () => {
   }
 
   try {
-    sendWebhookConsole(
-      'Webhookのテストを行っています... Webhookに開発者のIDが表示されます。確認してください。 (Step 3/3)'
-    );
-    await sendReport(
-      webhookClient,
-      '<@586824421470109716>',
-      '<@586824421470109716>',
-      'Webhookのテストです。',
-      undefined
-    );
+    sendWebhookConsole('Webhookのテストを行っています...  (Step 3/3)');
+    await webhookClient.send({ content: 'テスト配信' });
     sendWebhookConsole('Webhookのテストに成功しました。');
   } catch (e) {
     console.error(e);
     throw new Error('Webhookのテストに失敗しました。起動できません。');
   }
-  const endTime = performance.now();
 
-  console.log(`Done! (${endTime - startTime}ms)`);
+  console.log('Done!');
+  console.timeEnd('startup:');
 });
 
 client.on('interactionCreate', async (interaction) => {
