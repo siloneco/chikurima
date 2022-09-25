@@ -11,7 +11,7 @@ export async function saveDatabase(
   proof?: string
 ) {
   try {
-    sendDBConsole('Starts recording to the database ....');
+    sendDBConsole('データベースへの保存を開始します...');
     const reportDB = ReportInfo(sequelize);
     await reportDB.sync();
     await reportDB.create({
@@ -20,9 +20,9 @@ export async function saveDatabase(
       reason: reason,
       proof: proof
     });
-    sendDBConsole('Successfully recorded in database!');
+    sendDBConsole('データベースへの保存に成功しました!');
   } catch (e) {
-    sendDBConsole('Failed to record to database');
+    sendDBConsole('データベースへの保存に失敗しました。');
     console.error(e);
   }
 }

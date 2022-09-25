@@ -1,8 +1,9 @@
+import { sendReport, sendReportNoice } from '../util/sendReport.js';
 import type { Interaction } from 'discord.js';
 import type { Sequelize } from 'sequelize';
 import type { WebhookClient } from 'discord.js';
 import { saveDatabase } from '../db/saveDB.js';
-import { sendReport } from '../util/sendReport.js';
+import { sendErrorMessage } from '../util/sendErrorMessage.js';
 
 // eslint-disable-next-line max-params
 export async function MessageReportCommand(
@@ -21,11 +22,11 @@ export async function MessageReportCommand(
   const target = interaction.options.getString('message-link');
   if (!target) return;
   if (!checkMessage(target, guild_id)) {
-    await interaction.reply({
-      content:
-        'メッセージリンクが不正です。そのギルド内のメッセージリンクのみ通報できます。',
-      ephemeral: true
-    });
+    await sendErrorMessage(
+      interaction,
+      'このメッセージは通報できません。',
+      'このギルドのメッセージではないか、メッセージリンクとして不正です。'
+    );
     return;
   }
 
@@ -34,11 +35,8 @@ export async function MessageReportCommand(
   const reason = interaction.options.getString('reason');
   if (!reason) return;
   await saveDatabase(sequelize, reporterId, reason, undefined, target);
-  await sendReport(webhookClient, target, reporterId, reason);
-  await interaction.reply({
-    content: '通報は正しく送信されました。ご協力感謝いたします。',
-    ephemeral: true
-  });
+  await sendReport(webhookClient, reporterId, reason, undefined, target);
+  await sendReportNoice(interaction);
 }
 
 function checkMessage(targetMessagelink: string, guildId: string): boolean {

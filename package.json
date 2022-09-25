@@ -17,8 +17,9 @@
     "eslint": "eslint \"src/**/*.{js,ts,md}\"",
     "eslint:fix": "eslint \"src/**/*.{js,ts,md}\" --fix",
     "fix": "yarn run format && yarn run eslint:fix",
-    "prepare": "husky install",
-    "lint-staged": "lint-staged"
+    "postinstall": "husky install",
+    "lint-staged": "lint-staged",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*.{js,ts,md}": [
@@ -38,13 +39,12 @@
     "eslint": "^8.23.1",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-markdown": "^3.0.0",
-    "husky": "^8.0.1",
+    "husky": "^8.0.0",
     "lint-staged": "^13.0.3",
     "mariadb": "^3.0.1",
     "prettier": "^2.7.1",
     "sequelize": "^6.23.0",
     "ts-node": "^10.9.1",
-    "typescript": "^4.8.3",
-    "vitest": "^0.23.4"
+    "typescript": "^4.8.3"
   }
 }
