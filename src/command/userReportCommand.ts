@@ -38,7 +38,7 @@ export async function UserReportCommand(
   const proof = interaction.options.getAttachment('proof')?.url;
   if (!proof) return;
   await saveDatabase(sequelize, targetId, reporterId, reason, proof);
-  await sendReport(webhookClient, targetId, reporterId, reason, proof);
+  await sendReport(webhookClient, reporterId, reason, targetId, proof);
   await interaction.reply({
     content: '通報は正しく送信されました。ご協力感謝いたします。',
     ephemeral: true
