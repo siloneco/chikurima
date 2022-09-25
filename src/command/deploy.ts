@@ -38,7 +38,7 @@ export async function deployCommand(clientId: string) {
           .addStringOption((link) =>
             link
               .setName('message-link')
-              .setDescription('メッセージリンクを指定してください')
+              .setDescription('通報したいメッセージリンクを指定してください')
               .setRequired(true)
           )
           .addStringOption((reason) =>
