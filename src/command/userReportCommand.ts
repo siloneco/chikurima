@@ -45,5 +45,6 @@ export async function UserReportCommand(
 
 function checkUser(user: User | null): boolean {
   if (!user) return false;
-  return !(user.system && user.bot);
+  if (user.system || user.bot) return false;
+  return true;
 }
