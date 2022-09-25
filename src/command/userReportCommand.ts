@@ -1,9 +1,10 @@
+import { sendReport, sendReportNoice } from '../util/sendReport.js';
 import type { Interaction } from 'discord.js';
 import type { Sequelize } from 'sequelize';
 import type { User } from 'discord.js';
 import type { WebhookClient } from 'discord.js';
 import { saveDatabase } from '../db/saveDB.js';
-import { sendReport } from '../util/sendReport.js';
+import { sendErrorMessage } from '../util/sendErrorMessage.js';
 
 export async function UserReportCommand(
   sequelize: Sequelize,
@@ -19,11 +20,11 @@ export async function UserReportCommand(
 
   const target = interaction.options.getUser('target');
   if (!checkUser(target) && !checkUser(interaction.user)) {
-    await interaction.reply({
-      content:
-        '通報に失敗しました。Botまたはシステムユーザーは通報できません。',
-      ephemeral: true
-    });
+    await sendErrorMessage(
+      interaction,
+      'このユーザーを通報することはできません。',
+      'Botやシステムユーザーを通報することはできません。'
+    );
     return;
   }
   if (!target) {
@@ -39,10 +40,7 @@ export async function UserReportCommand(
   if (!proof) return;
   await saveDatabase(sequelize, targetId, reporterId, reason, proof);
   await sendReport(webhookClient, reporterId, reason, targetId, proof);
-  await interaction.reply({
-    content: '通報は正しく送信されました。ご協力感謝いたします。',
-    ephemeral: true
-  });
+  await sendReportNoice(interaction);
 }
 
 function checkUser(user: User | null): boolean {

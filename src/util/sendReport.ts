@@ -1,4 +1,9 @@
-import { Colors, EmbedBuilder, WebhookClient } from 'discord.js';
+import {
+  ChatInputCommandInteraction,
+  Colors,
+  EmbedBuilder,
+  WebhookClient
+} from 'discord.js';
 
 // eslint-disable-next-line max-params
 export async function sendReport(
@@ -9,12 +14,29 @@ export async function sendReport(
   proof?: string
 ) {
   await webhookClient.send({
-    embeds: [buildEmbed(reporterId, reason, targetId, proof)]
+    embeds: [buildReportEmbed(reporterId, reason, targetId, proof)]
   });
 }
 
+/**
+ * 通報成功のメッセージを送信します。
+ * @param interaction スラッシュコマンドのインタラクション
+ */
+export async function sendReportNoice(
+  interaction: ChatInputCommandInteraction
+) {
+  await interaction.reply({ embeds: [buildSuccessEmbed()], ephemeral: true });
+}
+
+/**
+ * 通報のEmbedを作成します。
+ * @param reporterId 通報者のID
+ * @param reason 通報の理由
+ * @param targetId 通報対象のID
+ * @param proof 証拠
+ */
 // eslint-disable-next-line max-params
-function buildEmbed(
+function buildReportEmbed(
   reporterId: string,
   reason: string,
   targetId?: string,
@@ -39,4 +61,14 @@ function buildEmbed(
     { name: '証拠', value: proof ?? '添付なし', inline: true }
   );
   return embed;
+}
+
+/**
+ * 通報成功時のメッセージEmbedを作成します。
+ */
+export function buildSuccessEmbed() {
+  return new EmbedBuilder()
+    .setAuthor({ name: '通報成功' })
+    .setDescription('通報は正しく送信されました。ご協力感謝いたします。')
+    .setColor(Colors.Green);
 }
