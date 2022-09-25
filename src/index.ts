@@ -23,14 +23,20 @@ const {
   MARIADB_USERNAME: username,
   MARIADB_PASSWORD: password,
   REPORT_WEBHOOK: webhookUrl
-} = extractEnv([
-  'DISCORD_BOT_TOKEN',
-  'MARIADB_HOST',
-  'MARIADB_NAME',
-  'MARIADB_USERNAME',
-  'MARIADB_PASSWORD',
-  'REPORT_WEBHOOK'
-]);
+} = extractEnv(
+  [
+    'DISCORD_BOT_TOKEN',
+    'MARIADB_HOST',
+    'MARIADB_NAME',
+    'MARIADB_USERNAME',
+    'MARIADB_PASSWORD',
+    'REPORT_WEBHOOK'
+  ],
+  {
+    MARIADB_HOST: 'localhost',
+    MARIADB_NAME: 'chikurima_db'
+  }
+);
 
 // mariadbのインスタンス作成｀
 const sequelize = new Sequelize(name, username, password, {
