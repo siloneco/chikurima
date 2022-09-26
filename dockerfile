@@ -1,11 +1,11 @@
-FROM node:16 as build
+FROM node:18 as build
 
 COPY . .
 
 RUN yarn
 RUN yarn build
 
-FROM node:16 as run
+FROM node:18 as run
 
 RUN mkdir /app
 COPY --from=build /build /app/build
