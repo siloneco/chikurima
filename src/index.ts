@@ -1,9 +1,5 @@
 import { Client, GatewayIntentBits, WebhookClient } from 'discord.js';
-import {
-  sendCommandConsole,
-  sendDBConsole,
-  sendWebhookConsole
-} from './util/logger.js';
+import { sendCommandConsole, sendDBConsole } from './util/logger.js';
 import { MessageReportCommand } from './command/messageReportCommand.js';
 import { ReportInfo } from './db/reportDB.js';
 import { Sequelize } from 'sequelize';
@@ -65,10 +61,10 @@ client.on('ready', async () => {
 
   // mariadbとの接続
   try {
-    sendDBConsole('データベースに接続しています... (Step 1/3)');
+    sendDBConsole('データベースに接続しています... (Step 1/2)');
     await sequelize.authenticate();
     ReportInfo(sequelize);
-    sendDBConsole('データベースへの接続に成功しました。');
+    sendDBConsole('データベースへの接続に成功しました。(Step 1/2)');
   } catch (e) {
     console.log(e);
     throw new Error('データベースへの接続に失敗しました。起動できません。');
@@ -76,21 +72,12 @@ client.on('ready', async () => {
 
   // コマンドの登録
   try {
-    sendCommandConsole('ギルドコマンドを登録中... (Step 2/3)');
+    sendCommandConsole('ギルドコマンドを登録中... (Step 2/2)');
     await deployCommand(client.user.id);
-    sendCommandConsole('ギルドコマンドの登録に成功しました。(Step 2/3)');
+    sendCommandConsole('ギルドコマンドの登録に成功しました。(Step 2/2)');
   } catch (e) {
     console.error(e);
     throw new Error('コマンドの登録に失敗しました。起動できません。');
-  }
-
-  try {
-    sendWebhookConsole('Webhookのテストを行っています...  (Step 3/3)');
-    await webhookClient.send({ content: 'テスト配信' });
-    sendWebhookConsole('Webhookのテストに成功しました。');
-  } catch (e) {
-    console.error(e);
-    throw new Error('Webhookのテストに失敗しました。起動できません。');
   }
 
   console.log('Done!');
