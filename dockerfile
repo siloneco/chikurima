@@ -5,7 +5,7 @@ COPY . .
 RUN yarn
 RUN yarn build
 
-FROM node:18 as run
+FROM node:18.10-alpine as run
 
 RUN mkdir /app
 COPY --from=build /build /app/build
